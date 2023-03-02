@@ -10,27 +10,41 @@ class SpeedCalculator(QWidget):
 
         # Create Widgets
         distance_label = QLabel("Distance: ")
-        distance_line_edit = QLineEdit()
+        self.distance_line_edit = QLineEdit()
 
         time_label = QLabel("Time(hours): ")
-        time_line_edit = QLineEdit()
+        self.time_line_edit = QLineEdit()
 
-        combo = QComboBox()
-        combo.addItems(['Metric (km)', 'Imperial (miles)'])
+        self.combo = QComboBox()
+        self.combo.addItems(['Metric (km)', 'Imperial (miles)'])
 
         calculate_button = QPushButton('Calculate')
-        output_label = QLabel("")
+        calculate_button.clicked.connect(self.calculate_speed)
+        self.output_label = QLabel("")
 
         # Add widgets to grid
         grid.addWidget(distance_label, 0, 0)
-        grid.addWidget(distance_line_edit, 0, 1)
-        grid.addWidget(combo, 0, 2)
+        grid.addWidget(self.distance_line_edit, 0, 1)
+        grid.addWidget(self.combo, 0, 2)
         grid.addWidget(time_label, 1, 0)
-        grid.addWidget(time_line_edit, 1, 1)
-        grid.addWidget(calculate_button, 2, 1, 1, 1)
-        grid.addWidget(output_label, 3, 0, 1, 2)
+        grid.addWidget(self.time_line_edit, 1, 1)
+        grid.addWidget(calculate_button, 2, 1)
+        grid.addWidget(self.output_label, 3, 0, 1, 2)
 
         self.setLayout(grid)
+
+    def calculate_speed(self):
+
+        if self.combo.currentText() == "Metric (km)":
+            distance_km = float(self.distance_line_edit.text()) * 1.60934
+            km_per_hour = distance_km / float(self.time_line_edit.text())
+            self.output_label.setText(f"Average Speed km/h")
+
+        if self.combo.currentText()() == "Imperial (miles)":
+            distance_km = float(self.distance_line_edit.text()) * 0.621371
+            miles_per_hour = distance_km / float(self.time_line_edit.text())
+
+        self.output_label.setText(f"Average Speed {miles_per_hour} mph")
 
 
 app = QApplication(sys.argv)
